@@ -72,7 +72,7 @@ var dotmatrix = (function(){
 			resultData = new Array(config.rows);
 			
 			result.empty();
-			var totesR = 0, totesG = 0, totesB = 0;
+			var totesR = 0, totesG = 0, totesB = 0, totesCount = 0;
 			for(row = 0; row < config.rows; row++){
 				resultData[row] = new Array(config.columns);
 				for(col = 0; col < config.columns; col++){
@@ -81,16 +81,16 @@ var dotmatrix = (function(){
 					var r = 0, g = 0, b = 0, count = 0;
 					for(p = 0; p < imgd.length; p+=4){
 						r += imgd[p], g += imgd[p+1], b += imgd[p+2];
-						totesR += r, totesG += g, totesB += b;
-						count++;
+						count++; totesCount++;
 					}
+					totesR += r, totesG += g, totesB += b;
 					var avg = { red: Math.round(r/count), green: Math.round(g/count), blue: Math.round(b/count) };
 					resultData[row][col] = avg
 				}
 			}
-			resultAvg = { red: Math.round(totesR/count), green: Math.round(totesG/count), blue: Math.round(totesB/count)}
+			resultAvg = { red: Math.round(totesR/totesCount), green: Math.round(totesG/totesCount), blue: Math.round(totesB/totesCount)}
 			if(typeof(callback) == 'function')
-				callback();
+				callback({ avg: resultAvg, data: resultData });
 		},
 		createDotMatrix: function(options){
 			$.extend(config, options);
