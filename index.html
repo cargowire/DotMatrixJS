@@ -1,0 +1,58 @@
+<html>
+<head>
+	<meta name="author" content="Craig Rowe - http://cargowire.net" />
+	
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="dotmatrix.js"></script>
+	
+	<script type="text/javascript">
+	$(function(){
+		dotmatrix.init({ imageRetrieved: function(data){
+			$('#info').text('Image retrieved: ' + data.image.width + 'px ' + data.image.height + 'px (Ratio: '+ data.image.width / data.image.height +')');
+		}});
+		$('#process').on('click', function(){
+			dotmatrix.processImage({ columns: $('#cols').val(), rows: $('#rows').val(), mono: $('#mono_on:checked').length, maintain_aspect: $('#maintain_aspect:checked').length }, dotmatrix.createDotMatrix);
+		});
+		$('#result-bg').on('keyup', function(){ var colour = $(this).val(); if(colour.substring(0,1) == '#' && (colour.length == 4 || colour.length == 7)) { $('#result').css('background-color', colour); } })
+	});
+	</script>
+	
+	<link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+
+	<form id="image-picker">
+		<p><label>Remote image path: </label><input type="text" name="image" id="image" /></p>
+		<p><label>Columns: </label><input type="text" class="number-field" name="cols" id="cols" maxlength="3" value="8" /></p>
+		<p><label>Rows: </label><input type="text" class="number-field" name="rows" id="rows" maxlength="3" value="8" /></p>
+		<p>
+			<label><input type="radio" id="mono_off" name="mono" value="0">Colour</label>
+			<label><input type="radio" id="mono_on" name="mono" value="1" checked="checked">B&amp;W</label>
+		</p>
+		<p>
+			<label><input type="checkbox" id="maintain_aspect" name="maintain_aspect" value="1">Maintain aspect</label>
+		</p>
+		<p><input type="submit" value="Retrieve Image"/><button id="process">Process</button></p>
+		<p><label>Dot BG: </label><input type="text" id="result-bg" name="result-bg" value="#FFEC8B"/></p>
+	</form>
+
+	<div class="column">
+		<p id="info"></p>
+		
+		<canvas id="csImage">
+		</canvas>
+		
+	</div>
+	
+	<div class="column">
+		<div id="result">
+			
+		</div>
+	</div>
+
+	<div id="footer">
+		<p>Brought to you by <a href="http://twitter.com/cargowire">cargowire</a>.  Inspired by <a href="http://twitter.com/sydlawrence">Syd</a> and <a href="http://twitter.com/skattyadz">Ad</a> and their <a href="https://path.com/p/2OL9ce">crazy arduino hack</a></p>
+	</div>
+</body>
+</html>
