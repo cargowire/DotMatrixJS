@@ -49,11 +49,11 @@ var dotmatrix = (function(){
 					    	canvas.width = remoteimage.width;
 							canvas.height = remoteimage.height;
 							canvas2d.drawImage(remoteimage, 0, 0);
+							aspectRatio = remoteimage.width / remoteimage.height;
+							if(typeof(config.imageRetrieved) == "function")
+								config.imageRetrieved({ image: remoteimage });
 						};
 						remoteimage.src = config.imageSrcPrefix + data;
-						aspectRatio = remoteimage.width / remoteimage.height;
-						if(typeof(config.imageRetrieved) == "function")
-							config.imageRetrieved({ image: remoteimage });
 				  }
 				});
 				e.preventDefault();
