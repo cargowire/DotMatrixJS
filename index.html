@@ -8,13 +8,22 @@
 	
 	<script type="text/javascript">
 	$(function(){
+	
+		var processAndCreate = function(){
+			dotmatrix.processImage({ columns: $('#cols').val(), rows: $('#rows').val(), mono: $('#mono_on:checked').length, maintain_aspect: $('#maintain_aspect:checked').length }, dotmatrix.createDotMatrix);
+		};
+	
 		dotmatrix.init({ imageRetrieved: function(data){
 			$('#info').text('Image retrieved: ' + data.image.width + 'px ' + data.image.height + 'px (Ratio: '+ data.image.width / data.image.height +')');
+			processAndCreate();
 		}});
-		$('#process').on('click', function(){
-			dotmatrix.processImage({ columns: $('#cols').val(), rows: $('#rows').val(), mono: $('#mono_on:checked').length, maintain_aspect: $('#maintain_aspect:checked').length }, dotmatrix.createDotMatrix);
-		});
+		$('#process').on('click', processAndCreate);
 		$('#result-bg').on('keyup', function(){ var colour = $(this).val(); if(colour.substring(0,1) == '#' && (colour.length == 4 || colour.length == 7)) { $('#result').css('background-color', colour); } })
+		if(window.location.search){
+			var preload = window.location.search.substring(1);
+			$('#image').val(preload);
+			$('#image-picker').submit();
+		}
 	});
 	</script>
 	
