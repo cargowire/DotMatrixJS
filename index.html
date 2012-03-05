@@ -10,7 +10,7 @@
 	$(function(){
 	
 		var processAndCreate = function(){
-			dotmatrix.processImage({ columns: $('#cols').val(), rows: $('#rows').val(), mono: $('#mono_on:checked').length, maintain_aspect: $('#maintain_aspect:checked').length }, dotmatrix.createDotMatrix);
+			dotmatrix.processImage({ columns: $('#cols').val(), rows: $('#rows').val(), mono: $('#mono_on:checked').length, maintain_aspect: $('#maintain_aspect:checked').length, threshold: $('#threshold').val() }, dotmatrix.createDotMatrix);
 		};
 	
 		dotmatrix.init({ imageRetrieved: function(data){
@@ -39,6 +39,7 @@
 			<label><input type="radio" id="mono_off" name="mono" value="0">Colour</label>
 			<label><input type="radio" id="mono_on" name="mono" value="1" checked="checked">B&amp;W</label>
 		</p>
+		<p><input type="text" class="number-field" id="threshold" name="threshold" maxlength="4" value="200"/></p>
 		<p>
 			<label><input type="checkbox" id="maintain_aspect" name="maintain_aspect" value="1">Maintain aspect</label>
 		</p>
