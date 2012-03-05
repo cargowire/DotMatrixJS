@@ -9,15 +9,22 @@
 	<script type="text/javascript">
 	$(function(){
 	
-		var processAndCreate = function(){
-			dotmatrix.processImage({ columns: $('#cols').val(), rows: $('#rows').val(), mono: $('#mono_on:checked').length, maintain_aspect: $('#maintain_aspect:checked').length, threshold: $('#threshold').val() }, dotmatrix.createDotMatrix);
+		var processAndCreate = function(options){
+			dotmatrix.processImage({ columns: $('#cols').val(), rows: $('#rows').val(), mono: $('#mono_on:checked').length, maintain_aspect: $('#maintain_aspect:checked').length },
+				function(e) {
+					var o = { threshold: e.avg.red + e.avg.green + e.avg.blue };
+					$.extend(o, options);
+					$('#threshold').val(o.threshold);
+					dotmatrix.createDotMatrix(o); 
+				}
+			);
 		};
 	
 		dotmatrix.init({ imageRetrieved: function(data){
 			$('#info').text('Image retrieved: ' + data.image.width + 'px ' + data.image.height + 'px (Ratio: '+ data.image.width / data.image.height +')');
 			processAndCreate();
 		}});
-		$('#process').on('click', processAndCreate);
+		$('#process').on('click', function(e) { processAndCreate({ threshold: $('#threshold').val() });e.preventDefault(); });
 		$('#result-bg').on('keyup', function(){ var colour = $(this).val(); if(colour.substring(0,1) == '#' && (colour.length == 4 || colour.length == 7)) { $('#result').css('background-color', colour); } })
 		if(window.location.search){
 			var preload = window.location.search.substring(1);
